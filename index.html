@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<title>著作権ドリル</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@600;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one narrow column like a 六法 page — article chips (第○条) as the recurring anchor, ○× marks as stamps */
+:root{
+  --paper:#F2F4F1; --sheet:#FBFCFA; --ink:#1B2730; --muted:#5E6B70; --rule:#D5DCD8;
+  --accent:#0E6B66; --accent-soft:#DCEDEA; --ok:#0E6B66; --ng:#B8432F; --ng-soft:#F6E2DC;
+  --display:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#11181C; --sheet:#182227; --ink:#E6ECE9; --muted:#97A5A6; --rule:#2B383D;
+  --accent:#5FC2B8; --accent-soft:#1D3836; --ok:#5FC2B8; --ng:#EE8B74; --ng-soft:#3A2420; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11181C; --sheet:#182227; --ink:#E6ECE9; --muted:#97A5A6; --rule:#2B383D;
+  --accent:#5FC2B8; --accent-soft:#1D3836; --ok:#5FC2B8; --ng:#EE8B74; --ng-soft:#3A2420; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.75}
+.wrap{max-width:680px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:24px}
+header.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.logo{font-family:var(--display);font-weight:900;font-size:1.9rem;letter-spacing:.04em;margin:0;cursor:pointer;line-height:1.2}
+.logo span{color:var(--accent)}
+.sub{color:var(--muted);font-size:.85rem}
+h2{font-family:var(--display);font-weight:600;font-size:1.25rem;margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.primary{background:var(--accent);color:var(--sheet);border:0;border-radius:6px;padding:14px 20px;font-weight:700;font-size:1rem;width:100%}
+.primary:hover{filter:brightness(1.08)}
+.ghost{background:transparent;border:1px solid var(--rule);border-radius:6px;padding:10px 16px}
+.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.cat{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0}
+.cat:hover{border-color:var(--accent)}
+.cat b{font-size:1.02rem}
+.cat small{color:var(--muted);font-size:.82rem;line-height:1.5}
+.cat .meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+.cat .meta .best{color:var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > *{flex:1 1 200px}
+.note{font-size:.8rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px;margin:0}
+/* quiz */
+.bar{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.track{flex:1;height:4px;background:var(--rule);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:22px 20px;display:flex;flex-direction:column;gap:18px;position:relative}
+.qcat{font-size:.72rem;letter-spacing:.12em;color:var(--accent);font-weight:700}
+.q{font-size:1.12rem;font-weight:500;margin:0;text-wrap:pretty}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;line-height:1.6}
+.choice:hover:not(:disabled){border-color:var(--accent)}
+.choice .k{font-family:var(--mono);font-size:.8rem;color:var(--muted);flex:none;width:1.2em;padding-top:2px}
+.choice.correct{border-color:var(--ok);background:var(--accent-soft)}
+.choice.wrong{border-color:var(--ng);background:var(--ng-soft)}
+.choice:disabled{cursor:default}
+.choice:disabled:not(.correct):not(.wrong){opacity:.55}
+.tf{flex-direction:row}
+.tf .choice{flex:1;justify-content:center;font-family:var(--display);font-size:1.6rem;padding:10px}
+.tf .choice .k{display:none}
+.stamp{position:absolute;top:14px;right:16px;font-family:var(--display);font-weight:900;font-size:2.6rem;line-height:1;transform:rotate(-8deg);pointer-events:none}
+.stamp.ok{color:var(--ok)} .stamp.ng{color:var(--ng)}
+@media (prefers-reduced-motion:no-preference){.stamp{animation:pop .28s ease-out}}
+@keyframes pop{from{transform:rotate(-8deg) scale(1.6);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+.exp{border-top:1px dashed var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.exp p{margin:0}
+.ref{align-self:flex-start;font-family:var(--display);font-weight:600;font-size:.85rem;border:1px solid var(--ink);padding:1px 10px;border-radius:2px}
+.verdict{font-weight:700}
+.verdict.ok{color:var(--ok)} .verdict.ng{color:var(--ng)}
+/* result */
+.score{display:flex;align-items:baseline;gap:10px;font-family:var(--display)}
+.score b{font-size:3.4rem;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.score span{color:var(--muted);font-size:1.2rem}
+.missed{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.missed li{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--ng);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.missed .mq{font-weight:500}
+.missed .ma{font-size:.9rem}
+.missed .ma b{color:var(--ok)}
+.missed .me{font-size:.86rem;color:var(--muted);margin:0}
+kbd{font-family:var(--mono);font-size:.75rem;border:1px solid var(--rule);border-radius:3px;padding:0 4px}
+.hint{font-size:.78rem;color:var(--muted);text-align:center;margin:0}
+@media (max-width:480px){.hint{display:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <h1 class="logo" id="home-link" tabindex="0">著作権<span>ドリル</span></h1>
+    <div class="sub">日本の著作権法・全<span id="total-count"></span>問</div>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+const CATS = {
+  kihon:  {name:"著作物の基本", desc:"何が保護され、何が保護されないか"},
+  kenri:  {name:"権利の中身", desc:"人格権・財産権・隣接権、職務著作"},
+  kikan:  {name:"保護期間", desc:"死後70年と、その数え方"},
+  reigai: {name:"自由に使える場面", desc:"私的複製・引用・授業・AI学習"},
+  shingai:{name:"侵害と罰則", desc:"侵害になる行為と、そのペナルティ"}
+};
+const TF = ["○ 正しい","× 誤り"];
+const Q = [
+ {id:1,c:"kihon",q:"日本で著作権を得るために、著作者がしなければならない手続は？",ch:["文化庁への登録","©マークの表示","作品の公表","何もしなくてよい"],a:3,ref:"第17条2項",e:"著作権は作品を創作した時点で自動的に発生します（無方式主義）。登録も©表示も公表も不要です。文化庁の登録制度は、権利の移転を第三者に主張する場面などで使うもので、権利を生む手続ではありません。"},
+ {id:2,c:"kihon",q:"「アイデアそのもの」は著作権で保護される。",ch:TF,a:1,tf:true,ref:"第2条1項1号",e:"保護されるのは具体的な「表現」で、アイデアや手法そのものは保護されません。同じトリックを使った別の推理小説を書いても、文章表現を真似していなければ侵害になりません。"},
+ {id:3,c:"kihon",q:"次のうち、著作物にあたらないものはどれ？",ch:["小学生が描いた絵","台本なしの講演","事実だけを短く伝える人事異動の記事","SNSに書いた短い詩"],a:2,ref:"第10条2項",e:"事実を伝えるだけの雑報や時事報道は著作物にあたりません。一方で、創作性があれば子どもの絵も、口頭の講演も、短い詩も著作物です。上手さや芸術的価値は問われません。"},
+ {id:4,c:"kihon",q:"法律の条文や裁判所の判決文は、許諾なしに自由に利用できる。",ch:TF,a:0,tf:true,ref:"第13条",e:"憲法・法令、国や自治体の告示・通達、判決などは、広く知らせるべきものとして著作権の対象から外されています。"},
+ {id:5,c:"kihon",q:"著作権法の「著作物」の定義に含まれていない要素は？",ch:["思想又は感情を含む","創作的である","表現したものである","芸術的な価値が高い"],a:3,ref:"第2条1項1号",e:"定義は「思想又は感情を創作的に表現したもので、文芸・学術・美術・音楽の範囲に属するもの」。作品の出来の良さや価値の高さは要件ではありません。"},
+ {id:6,c:"kihon",q:"本や曲のタイトルは、ふつう単独で著作物として保護される。",ch:TF,a:1,tf:true,ref:"裁判例／第20条1項",e:"短いタイトルは創作性が認められにくく、裁判例でも著作物性は否定される傾向です。ただし、作品の中のタイトルを無断で変えることは著作者の同一性保持権の問題になります。"},
+ {id:7,c:"kenri",q:"著作者人格権に含まれないものは？",ch:["公表権","氏名表示権","同一性保持権","複製権"],a:3,ref:"第18条〜第20条",e:"著作者人格権は、公表するかどうか・名前をどう出すか・内容を勝手に変えさせないか、の3つ。複製権は財産的な権利（著作権）の一つです。"},
+ {id:8,c:"kenri",q:"著作者人格権は、契約によって他人に譲渡できる。",ch:TF,a:1,tf:true,ref:"第59条",e:"著作者人格権は著作者本人だけに属し、譲渡できません。そのため実務では「著作者人格権を行使しない」という特約を契約に入れることが多くあります。"},
+ {id:9,c:"kenri",q:"契約書に「本作品の著作権をすべて譲渡する」とだけ書いた。翻案権（アレンジ・映像化などの権利）はどうなる？",ch:["当然に譲受人へ移る","元の権利者に残っていると推定される","契約自体が無効になる","消滅する"],a:1,ref:"第61条2項",e:"翻案権（第27条）と二次的著作物の利用権（第28条）は、契約で特に書いておかないと元の権利者に残ったものと推定されます。「第27条及び第28条の権利を含む」と明記するのが定番です。"},
+ {id:10,c:"kenri",q:"会社員が会社の指示で業務用プログラムを作った。契約などに特別な定めがなければ、著作者は誰？",ch:["作った社員","会社","社員と会社の共有","発注した取引先"],a:1,ref:"第15条2項",e:"職務著作の要件を満たせば、会社が著作者になります。プログラムの場合は、会社名義で公表することも要件になりません。"},
+ {id:11,c:"kenri",q:"著作隣接権を持たないのは？",ch:["歌手などの実演家","レコード製作者","放送事業者","作詞家"],a:3,ref:"第89条",e:"著作隣接権は、作品を世の中に伝える人たち（実演家・レコード製作者・放送事業者・有線放送事業者）の権利です。作詞家は著作者として著作権を持ちます。"},
+ {id:12,c:"kenri",q:"漫画を原作にアニメを作った場合、原作者もそのアニメの利用について権利を持つ。",ch:TF,a:0,tf:true,ref:"第28条",e:"アニメは原作の二次的著作物です。原作者はアニメの利用について、アニメの著作者と同じ種類の権利を持ちます。"},
+ {id:13,c:"kikan",q:"個人が実名で発表した著作物の保護期間は、原則として？",ch:["著作者の死後50年","著作者の死後70年","公表後70年","創作後100年"],a:1,ref:"第51条",e:"2018年12月30日施行の改正（TPP11関連）で、死後50年から死後70年に延びました。"},
+ {id:14,c:"kikan",q:"2015年5月10日に亡くなった作家の作品は、いつまで保護される？",ch:["2085年5月9日","2085年5月10日","2085年12月31日","2086年5月10日"],a:2,ref:"第57条",e:"期間は亡くなった翌年の1月1日から数えます（暦年主義）。2016年1月1日から70年なので、2085年12月31日まで保護されます。"},
+ {id:15,c:"kikan",q:"会社など団体名義で公表された著作物の保護期間は？",ch:["公表後50年","公表後70年","代表者の死後70年","期限なし"],a:1,ref:"第53条",e:"団体名義の著作物は、人の死亡時期で測れないため公表後70年です（創作後70年以内に公表されなかった場合は創作後70年）。"},
+ {id:16,c:"kikan",q:"映画の著作物の保護期間は？",ch:["監督の死後70年","公表後70年","公開後50年","最後の出演者の死後70年"],a:1,ref:"第54条",e:"映画は関わる人が多いため、監督などの死亡時期ではなく公表後70年で計算します。"},
+ {id:17,c:"kikan",q:"2018年の改正で、1967年以前に亡くなった作家の作品は保護が復活した。",ch:TF,a:1,tf:true,ref:"平成28年改正法附則",e:"改正時点ですでに保護期間（死後50年）が終わっていた作品は、復活しません。1967年以前に亡くなった作家の作品は、改正前に満了済みのため自由に利用できます。"},
+ {id:18,c:"kikan",q:"テレビ局（放送事業者）が持つ著作隣接権の保護期間は？",ch:["放送後50年","放送後70年","放送後20年","番組の著作権と同じ"],a:0,ref:"第101条2項3号",e:"実演とレコードは2018年改正で70年に延びましたが、放送・有線放送は放送後50年のままです。"},
+ {id:19,c:"reigai",q:"自分で買ったCDを、自分のスマホで聴くためにコピーするのは許される。",ch:TF,a:0,tf:true,ref:"第30条1項",e:"個人や家庭内など限られた範囲で使うための複製（私的使用のための複製）は、許諾なしにできます。"},
+ {id:20,c:"reigai",q:"私的使用が目的でも、許されない複製はどれ？",ch:["録画したテレビ番組を自分で見るためにダビング","買った本の1ページを自分用にスキャン","コピーガードを外してDVDを複製","家族で聴くために買ったCDをコピー"],a:2,ref:"第30条1項2号",e:"コピーガードなどの技術的保護手段を回避して行う複製は、私的使用目的でも例外の対象外です。"},
+ {id:21,c:"reigai",q:"違法にアップロードされた漫画だと知りながら、個人で読むためにダウンロードするのは？",ch:["私的使用なので問題ない","2021年1月から原則違法","音楽や映像でなければ違法ではない","有料作品だけが対象"],a:1,ref:"第30条1項4号",e:"音楽・映像に限られていた違法ダウンロードの対象が、2021年1月から漫画・書籍・論文などにも広がりました。ただし数コマ程度の軽微なものや、スクリーンショットへの写り込みなどは対象外です。"},
+ {id:22,c:"reigai",q:"「引用」として認められる条件にあてはまらないものは？",ch:["公表された著作物であること","引用部分がはっきり区別されていること","自分の文章が主、引用が従であること","著作者の許諾を得ていること"],a:3,ref:"第32条1項",e:"引用は許諾なしに使える制度です。公正な慣行に合い、目的上正当な範囲であることが求められ、裁判例では明瞭区別と主従関係が判断の目安とされてきました。"},
+ {id:23,c:"reigai",q:"他人の文章を引用するときは、出所（作品名や著作者名）を示す必要がある。",ch:TF,a:0,tf:true,ref:"第48条",e:"引用など、一定の例外規定で著作物を使うときは出所の明示が義務づけられています。"},
+ {id:24,c:"reigai",q:"高校の文化祭で、入場無料・出演者は無報酬で、他人の曲を演奏する。許諾は？",ch:["不要","作詞家・作曲家の許諾が必要","JASRACへの届出だけ必要","校長の許可があれば不要"],a:0,ref:"第38条1項",e:"営利目的でない・観客から料金を取らない・出演者に報酬を払わない、の3つを満たす上演・演奏は許諾なしにできます。どれか1つでも欠ければ対象外です。"},
+ {id:25,c:"reigai",q:"学校の授業のためなら、教員は教材をどれだけでもコピーして配ってよい。",ch:TF,a:1,tf:true,ref:"第35条",e:"授業に必要と認められる限度で、権利者の利益を不当に害しない範囲に限られます。問題集を丸ごとコピーして配る、といった使い方はできません。授業でのネット配信は補償金制度（2020年4月〜）の対象です。"},
+ {id:26,c:"reigai",q:"AIの学習用データとして著作物を使うことについて、日本の著作権法の基本的な扱いは？",ch:["原則として許諾なく可能、ただし例外あり","すべて許諾が必要","非営利の研究目的に限り可能","海外のサーバーで行えば可能"],a:0,ref:"第30条の4",e:"作品を味わう目的ではない情報解析などの利用は、原則として許諾なしにできます。ただし、作品を楽しむ目的が併存する場合や、権利者の利益を不当に害する場合は対象外です。"},
+ {id:27,c:"reigai",q:"街で撮った写真の背景にポスターが小さく写り込んだ。これをSNSに投稿すると著作権侵害になる。",ch:TF,a:1,tf:true,ref:"第30条の2",e:"撮影などに付随して軽微に写り込んだ著作物（付随対象著作物）は、正当な範囲内なら利用できます。2020年の改正でスマホ撮影や生配信も対象に含まれるようになりました。"},
+ {id:28,c:"shingai",q:"他人が撮った写真を無断で自分のブログに載せた。主に侵害する権利は？",ch:["複製権と公衆送信権","上演権と展示権","貸与権と頒布権","翻訳権と翻案権"],a:0,ref:"第21条・第23条",e:"サーバーに保存する時点で複製、ネットで誰でも見られる状態にする時点で公衆送信（送信可能化）にあたります。"},
+ {id:29,c:"shingai",q:"個人が著作権を侵害した場合の刑事罰の上限は？",ch:["3年以下の拘禁刑または300万円以下の罰金","5年以下の拘禁刑または500万円以下の罰金","10年以下の拘禁刑または1000万円以下の罰金","罰金のみで、拘禁刑はない"],a:2,ref:"第119条1項",e:"10年以下の拘禁刑もしくは1000万円以下の罰金、またはその両方です（2025年6月から懲役は拘禁刑に一本化）。法人には3億円以下の罰金が科されることがあります。"},
+ {id:30,c:"shingai",q:"著作権侵害の罪は、すべて権利者の告訴がないと起訴できない（親告罪）。",ch:TF,a:1,tf:true,ref:"第123条2項",e:"原則は親告罪ですが、2018年の改正で、営利目的で有償の作品をそのまま大量に複製・配信する海賊版のような悪質なケースは告訴なしで起訴できるようになりました。二次創作の多くは引き続き親告罪です。"},
+ {id:31,c:"shingai",q:"著作権侵害に対して、権利者が民事上求められないものは？",ch:["侵害行為の差止め","損害賠償","不当利得の返還","相手に拘禁刑を科すこと"],a:3,ref:"第112条・第114条",e:"差止め、損害賠償、不当利得返還、名誉回復措置などは民事で請求できます。刑罰を科すのは刑事手続で、裁判所が判断します。"},
+ {id:32,c:"shingai",q:"他人の小説の筋や登場人物をほぼそのまま使い、文章だけ自分の言葉に書き換えて販売した。",ch:["表現を変えたので問題ない","翻案権の侵害になりうる","引用なので許される","私的使用なので許される"],a:1,ref:"第27条",e:"元の作品の本質的な特徴を感じ取れるまま改変して新しい作品を作ると、翻案権の侵害になりえます。単なるアイデアの借用か、表現の本質的特徴の利用かがポイントです。"}
+];
+
+const LIMIT = 10;
+const app = document.getElementById("app");
+document.getElementById("total-count").textContent = Q.length;
+const store = {
+  get(k,d){try{const v=localStorage.getItem("cqz_"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("cqz_"+k,JSON.stringify(v))}catch(e){}}
+};
+let S = null;
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => {a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+function home(){
+  S = null;
+  const best = store.get("best",{}), weak = store.get("weak",[]);
+  const cards = Object.entries(CATS).map(([k,v])=>{
+    const n = Q.filter(q=>q.c===k).length, b = best[k];
+    return `<button class="cat" data-cat="${k}"><b>${v.name}</b><small>${v.desc}</small>
+      <span class="meta"><span>${n}問</span><span class="best">${b!=null?"最高 "+b+"%":"未挑戦"}</span></span></button>`;
+  }).join("");
+  app.innerHTML = `<div style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <h2>今日はどこから解きますか</h2>
+      <p class="lead">1回${LIMIT}問。答えるたびに、根拠の条文と解説が出ます。</p>
+    </div>
+    <div class="row">
+      <button class="primary" data-cat="all">全分野からランダムに${LIMIT}問</button>
+      ${weak.length?`<button class="ghost" data-cat="weak">苦手な問題だけ（${weak.length}問）</button>`:""}
+    </div>
+    <div class="cats">${cards}</div>
+    <p class="note">内容は2026年10月時点の日本の著作権法にもとづく学習用の要約です。条文の細かな要件や例外は省略している箇所があります。実際の判断が必要な場面では、条文・文化庁の資料や専門家に確認してください。</p>
+  </div>`;
+  app.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>start(b.dataset.cat));
+}
+
+function start(cat){
+  let pool;
+  if(cat==="all") pool = Q;
+  else if(cat==="weak"){const w=store.get("weak",[]);pool=Q.filter(q=>w.includes(q.id))}
+  else if(cat==="retry") pool = S.missed;
+  else pool = Q.filter(q=>q.c===cat);
+  const qs = shuffle(pool).slice(0,LIMIT).map(q=>{
+    if(q.tf) return {...q,order:[0,1]};
+    return {...q,order:shuffle(q.ch.map((_,i)=>i))};
+  });
+  S = {cat:cat==="retry"?S.cat:cat, qs, i:0, score:0, missed:[], answered:false};
+  render();
+}
+
+function render(){
+  const q = S.qs[S.i], n = S.qs.length;
+  app.innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
+    <div class="bar"><span>${S.i+1} / ${n}</span><div class="track"><i style="width:${(S.i/n)*100}%"></i></div><span>正解 ${S.score}</span></div>
+    <article class="card" id="card">
+      <div class="qcat">${CATS[q.c].name}${q.tf?"　○×問題":""}</div>
+      <p class="q">${esc(q.q)}</p>
+      <div class="choices ${q.tf?"tf":""}">
+        ${q.order.map((ci,k)=>`<button class="choice" data-ci="${ci}"><span class="k">${k+1}</span><span>${esc(q.tf?q.ch[ci].slice(0,1):q.ch[ci])}</span></button>`).join("")}
+      </div>
+      <div id="exp"></div>
+    </article>
+    <p class="hint"><kbd>1</kbd>〜<kbd>${q.order.length}</kbd> で回答、<kbd>Enter</kbd> で次へ</p>
+  </div>`;
+  S.answered = false;
+  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>answer(+b.dataset.ci));
+}
+
+function answer(ci){
+  if(S.answered) return;
+  S.answered = true;
+  const q = S.qs[S.i], ok = ci===q.a;
+  if(ok) S.score++; else S.missed.push(q);
+  const weak = new Set(store.get("weak",[]));
+  ok ? weak.delete(q.id) : weak.add(q.id);
+  store.set("weak",[...weak]);
+  app.querySelectorAll(".choice").forEach(b=>{
+    const c=+b.dataset.ci; b.disabled=true;
+    if(c===q.a) b.classList.add("correct"); else if(c===ci) b.classList.add("wrong");
+  });
+  const card = document.getElementById("card");
+  card.insertAdjacentHTML("beforeend",`<div class="stamp ${ok?"ok":"ng"}" aria-hidden="true">${ok?"○":"×"}</div>`);
+  const last = S.i===S.qs.length-1;
+  document.getElementById("exp").innerHTML = `<div class="exp">
+    <span class="verdict ${ok?"ok":"ng"}">${ok?"正解":"不正解　正解は「"+esc(q.ch[q.a])+"」"}</span>
+    <span class="ref">${esc(q.ref)}</span>
+    <p>${esc(q.e)}</p>
+    <button class="primary" id="next" style="margin-top:6px">${last?"結果を見る":"次の問題へ"}</button>
+  </div>`;
+  const nx = document.getElementById("next"); nx.onclick = next; nx.focus({preventScroll:true});
+  document.getElementById("exp").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function next(){
+  if(S.i < S.qs.length-1){S.i++;render();window.scrollTo({top:0})} else result();
+}
+
+function result(){
+  const n=S.qs.length, pct=Math.round(S.score/n*100);
+  if(S.cat!=="weak"){const best=store.get("best",{}); if(S.cat in CATS || S.cat==="all"){ if(S.cat in CATS && (best[S.cat]==null||pct>best[S.cat])){best[S.cat]=pct;store.set("best",best)} }}
+  const msg = pct===100?"全問正解。条文の根拠まで押さえられています。":pct>=70?"よくできています。間違えた問題の条文をもう一度確認しましょう。":"まずは解説を読み直して、間違えた問題に再挑戦しましょう。";
+  app.innerHTML = `<div style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="qcat">${S.cat in CATS?CATS[S.cat].name:S.cat==="weak"?"苦手な問題":"全分野ランダム"}の結果</div>
+      <div class="score"><b>${S.score}</b><span>/ ${n} 問正解</span></div>
+      <p class="lead">${msg}</p>
+    </div>
+    <div class="row">
+      ${S.missed.length?`<button class="primary" id="retry">間違えた${S.missed.length}問に再挑戦</button>`:""}
+      <button class="ghost" id="again">トップに戻る</button>
+    </div>
+    ${S.missed.length?`<h2>間違えた問題</h2><ul class="missed">${S.missed.map(q=>`<li>
+      <span class="ref">${esc(q.ref)}</span>
+      <span class="mq">${esc(q.q)}</span>
+      <span class="ma">正解：<b>${esc(q.ch[q.a])}</b></span>
+      <p class="me">${esc(q.e)}</p></li>`).join("")}</ul>`:""}
+  </div>`;
+  const r=document.getElementById("retry"); if(r) r.onclick=()=>start("retry");
+  document.getElementById("again").onclick=home;
+  window.scrollTo({top:0});
+}
+
+document.getElementById("home-link").onclick = home;
+document.getElementById("home-link").onkeydown = e=>{if(e.key==="Enter")home()};
+document.addEventListener("keydown",e=>{
+  if(!S || !document.getElementById("card")) return;
+  if(!S.answered){
+    const k=parseInt(e.key,10), bs=app.querySelectorAll(".choice");
+    if(k>=1 && k<=bs.length) bs[k-1].click();
+  }else if(e.key==="Enter" && document.activeElement?.id!=="next"){next()}
+});
+home();
+</script>
+</body>
+</html>
