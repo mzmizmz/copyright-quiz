@@ -7,105 +7,168 @@
 <title>著作権ドリル</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@600;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800;900&display=swap">
 <style>
-/* Layout: one narrow column like a 六法 page — article chips (第○条) as the recurring anchor, ○× marks as stamps */
+/* Layout: one game column — chunky 3D buttons, a fixed bottom action bar that becomes the feedback sheet, category colors carried by round kanji badges */
 :root{
-  --paper:#F2F4F1; --sheet:#FBFCFA; --ink:#1B2730; --muted:#5E6B70; --rule:#D5DCD8;
-  --accent:#0E6B66; --accent-soft:#DCEDEA; --ok:#0E6B66; --ng:#B8432F; --ng-soft:#F6E2DC;
-  --display:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
-  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --bg:#F4F8FC; --card:#FFFFFF; --ink:#24313F; --muted:#6C7A89; --line:#DCE5EE; --line-d:#C3D0DC;
+  --sky:#1CA7EC; --sky-d:#0E86C2; --sky-t:#DDF2FD;
+  --sun:#FFC23D; --sun-d:#E09A00; --sun-t:#FFF3D3;
+  --mint:#22C39A; --mint-d:#139A77; --mint-t:#D8F7EE;
+  --coral:#FF5C64; --coral-d:#D83B44; --coral-t:#FFE3E4;
+  --grape:#8D6BF0; --grape-d:#6A47CF; --grape-t:#ECE6FE;
+  --on:#FFFFFF;
+  --font:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#11181C; --sheet:#182227; --ink:#E6ECE9; --muted:#97A5A6; --rule:#2B383D;
-  --accent:#5FC2B8; --accent-soft:#1D3836; --ok:#5FC2B8; --ng:#EE8B74; --ng-soft:#3A2420; color-scheme:dark}}
+  --bg:#121A23; --card:#1B2632; --ink:#EEF3F8; --muted:#97A6B5; --line:#2C3A49; --line-d:#3A4B5D;
+  --sky-t:#123447; --sun-t:#3A2F14; --mint-t:#113A30; --coral-t:#40191C; --grape-t:#2A2147; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --paper:#11181C; --sheet:#182227; --ink:#E6ECE9; --muted:#97A5A6; --rule:#2B383D;
-  --accent:#5FC2B8; --accent-soft:#1D3836; --ok:#5FC2B8; --ng:#EE8B74; --ng-soft:#3A2420; color-scheme:dark}
-body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.75}
-.wrap{max-width:680px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:24px}
-header.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:10px}
-.logo{font-family:var(--display);font-weight:900;font-size:1.9rem;letter-spacing:.04em;margin:0;cursor:pointer;line-height:1.2}
-.logo span{color:var(--accent)}
-.sub{color:var(--muted);font-size:.85rem}
-h2{font-family:var(--display);font-weight:600;font-size:1.25rem;margin:0;text-wrap:balance}
-.lead{margin:0;color:var(--muted)}
-button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.primary{background:var(--accent);color:var(--sheet);border:0;border-radius:6px;padding:14px 20px;font-weight:700;font-size:1rem;width:100%}
-.primary:hover{filter:brightness(1.08)}
-.ghost{background:transparent;border:1px solid var(--rule);border-radius:6px;padding:10px 16px}
-.ghost:hover{border-color:var(--accent);color:var(--accent)}
-.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.cat{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0}
-.cat:hover{border-color:var(--accent)}
-.cat b{font-size:1.02rem}
-.cat small{color:var(--muted);font-size:.82rem;line-height:1.5}
-.cat .meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
-.cat .meta .best{color:var(--accent)}
-.row{display:flex;gap:10px;flex-wrap:wrap}
+  --bg:#121A23; --card:#1B2632; --ink:#EEF3F8; --muted:#97A6B5; --line:#2C3A49; --line-d:#3A4B5D;
+  --sky-t:#123447; --sun-t:#3A2F14; --mint-t:#113A30; --coral-t:#40191C; --grape-t:#2A2147; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.7;font-weight:500}
+.wrap{max-width:620px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.stack{display:flex;flex-direction:column;gap:18px}
+
+/* 3D buttons */
+.btn{--c:var(--sky);--cd:var(--sky-d);border:0;border-radius:16px;background:var(--c);color:var(--on);font-weight:800;font-size:1.05rem;letter-spacing:.06em;padding:14px 18px;box-shadow:0 5px 0 var(--cd);transition:transform .06s,box-shadow .06s,filter .15s;width:100%}
+.btn:hover:not(:disabled){filter:brightness(1.06)}
+.btn:active:not(:disabled){transform:translateY(5px);box-shadow:0 0 0 var(--cd)}
+.btn:disabled{--c:var(--line);--cd:var(--line-d);color:var(--muted);cursor:default}
+.btn.mint{--c:var(--mint);--cd:var(--mint-d)} .btn.coral{--c:var(--coral);--cd:var(--coral-d)}
+.btn.sun{--c:var(--sun);--cd:var(--sun-d);color:#3A2A00}
+.btn.plain{--c:var(--card);--cd:var(--line-d);color:var(--sky);border:2px solid var(--line-d)}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.logo{margin:0;font-weight:900;font-size:1.5rem;letter-spacing:.02em;cursor:pointer;line-height:1.2}
+.logo span{color:var(--sky)}
+.stats{display:flex;gap:8px}
+.stat{display:flex;align-items:center;gap:5px;font-weight:800;font-size:.95rem;padding:4px 12px;border-radius:999px;background:var(--card);border:2px solid var(--line);font-variant-numeric:tabular-nums}
+.stat svg{width:18px;height:18px;flex:none}
+
+/* mascot bubble */
+.hello{display:flex;align-items:flex-end;gap:12px}
+.hello svg{width:84px;height:84px;flex:none}
+.bubble{position:relative;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 16px;font-weight:700;min-width:0}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:18px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--line);border-bottom:2px solid var(--line);transform:rotate(45deg)}
+.bubble small{display:block;color:var(--muted);font-weight:500;font-size:.85rem}
+
+/* category list */
+.cats{display:flex;flex-direction:column;gap:12px}
+.cat{display:flex;align-items:center;gap:14px;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 14px;box-shadow:0 4px 0 var(--line);transition:transform .06s,box-shadow .06s}
+.cat:hover{border-color:var(--c)}
+.cat:active{transform:translateY(4px);box-shadow:0 0 0 var(--line)}
+.badge{position:relative;width:58px;height:58px;flex:none;display:grid;place-items:center}
+.badge svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.badge b{width:44px;height:44px;border-radius:50%;background:var(--c);color:var(--on);display:grid;place-items:center;font-weight:900;font-size:1.3rem;box-shadow:0 3px 0 var(--cd)}
+.cat .t{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.45}
+.cat .t b{font-size:1.05rem;font-weight:800}
+.cat .t small{color:var(--muted);font-size:.83rem}
+.cat .pct{font-weight:900;color:var(--c);font-size:.95rem;font-variant-numeric:tabular-nums;flex:none}
+.c-kihon{--c:var(--sky);--cd:var(--sky-d)} .c-kenri{--c:var(--grape);--cd:var(--grape-d)}
+.c-kikan{--c:var(--sun);--cd:var(--sun-d)} .c-reigai{--c:var(--mint);--cd:var(--mint-d)}
+.c-shingai{--c:var(--coral);--cd:var(--coral-d)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
 .row > *{flex:1 1 200px}
-.note{font-size:.8rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px;margin:0}
+.note{font-size:.78rem;color:var(--muted);margin:6px 0 0;line-height:1.6}
+
 /* quiz */
-.bar{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.track{flex:1;height:4px;background:var(--rule);border-radius:2px;overflow:hidden}
-.track i{display:block;height:100%;background:var(--accent);transition:width .3s}
-.card{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:22px 20px;display:flex;flex-direction:column;gap:18px;position:relative}
-.qcat{font-size:.72rem;letter-spacing:.12em;color:var(--accent);font-weight:700}
-.q{font-size:1.12rem;font-weight:500;margin:0;text-wrap:pretty}
-.choices{display:flex;flex-direction:column;gap:8px}
-.choice{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;line-height:1.6}
-.choice:hover:not(:disabled){border-color:var(--accent)}
-.choice .k{font-family:var(--mono);font-size:.8rem;color:var(--muted);flex:none;width:1.2em;padding-top:2px}
-.choice.correct{border-color:var(--ok);background:var(--accent-soft)}
-.choice.wrong{border-color:var(--ng);background:var(--ng-soft)}
+.qtop{display:flex;align-items:center;gap:12px}
+.x{border:0;background:none;padding:4px;color:var(--muted);flex:none;display:grid;place-items:center}
+.x svg{width:24px;height:24px}
+.prog{flex:1;height:16px;background:var(--line);border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;min-width:16px;border-radius:999px;background:var(--mint);position:relative;transition:width .35s cubic-bezier(.3,1.4,.6,1)}
+.prog i::after{content:"";position:absolute;left:8px;right:8px;top:4px;height:4px;border-radius:4px;background:rgba(255,255,255,.35)}
+.combo{display:flex;align-items:center;gap:3px;font-weight:900;color:var(--sun-d);font-variant-numeric:tabular-nums;flex:none;min-width:44px;justify-content:flex-end}
+.combo svg{width:20px;height:20px}
+.combo.off{color:var(--muted);opacity:.5}
+.kind{display:inline-flex;align-self:flex-start;font-weight:800;font-size:.8rem;letter-spacing:.08em;color:var(--c);background:var(--card);border:2px solid var(--c);border-radius:999px;padding:1px 12px}
+.q{font-size:1.3rem;font-weight:800;margin:0;line-height:1.55;text-wrap:pretty}
+.choices{display:flex;flex-direction:column;gap:10px}
+.choice{display:flex;align-items:center;gap:12px;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:13px 14px;box-shadow:0 4px 0 var(--line);font-weight:700;line-height:1.5;transition:transform .06s,box-shadow .06s,border-color .1s,background .1s}
+.choice .k{flex:none;width:28px;height:28px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;font-size:.8rem;color:var(--muted);font-weight:800}
+.choice:hover:not(:disabled){background:var(--bg)}
+.choice:active:not(:disabled){transform:translateY(4px);box-shadow:0 0 0 var(--line)}
+.choice.sel{border-color:var(--sky);background:var(--sky-t);box-shadow:0 4px 0 var(--sky);color:var(--sky-d)}
+.choice.sel .k{border-color:var(--sky);color:var(--sky)}
+.choice.correct{border-color:var(--mint);background:var(--mint-t);box-shadow:0 4px 0 var(--mint)}
+.choice.correct .k{border-color:var(--mint);background:var(--mint);color:var(--on)}
+.choice.wrong{border-color:var(--coral);background:var(--coral-t);box-shadow:0 4px 0 var(--coral)}
+.choice.wrong .k{border-color:var(--coral);background:var(--coral);color:var(--on)}
 .choice:disabled{cursor:default}
-.choice:disabled:not(.correct):not(.wrong){opacity:.55}
+.choice:disabled:not(.correct):not(.wrong){opacity:.5}
 .tf{flex-direction:row}
-.tf .choice{flex:1;justify-content:center;font-family:var(--display);font-size:1.6rem;padding:10px}
+.tf .choice{flex:1;flex-direction:column;justify-content:center;gap:0;padding:18px 10px}
 .tf .choice .k{display:none}
-.stamp{position:absolute;top:14px;right:16px;font-family:var(--display);font-weight:900;font-size:2.6rem;line-height:1;transform:rotate(-8deg);pointer-events:none}
-.stamp.ok{color:var(--ok)} .stamp.ng{color:var(--ng)}
-@media (prefers-reduced-motion:no-preference){.stamp{animation:pop .28s ease-out}}
-@keyframes pop{from{transform:rotate(-8deg) scale(1.6);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
-.exp{border-top:1px dashed var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:8px}
-.exp p{margin:0}
-.ref{align-self:flex-start;font-family:var(--display);font-weight:600;font-size:.85rem;border:1px solid var(--ink);padding:1px 10px;border-radius:2px}
-.verdict{font-weight:700}
-.verdict.ok{color:var(--ok)} .verdict.ng{color:var(--ng)}
+.tf .choice .mk{font-size:2.6rem;font-weight:900;line-height:1.1}
+.tf .choice .lb{font-size:.85rem;color:var(--muted)}
+.tf .choice.sel .lb{color:var(--sky-d)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .choice.sel{color:var(--sky)} :root:not([data-theme="light"]) .tf .choice.sel .lb{color:var(--sky)}}
+:root[data-theme="dark"] .choice.sel{color:var(--sky)}
+@media (prefers-reduced-motion:no-preference){.shake{animation:shake .35s} .bounce{animation:bounce .4s}}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+@keyframes bounce{40%{transform:scale(1.04)}}
+
+/* bottom bar / feedback sheet */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--card);border-top:2px solid var(--line);padding-top:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));transition:background .2s}
+.dock .in{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:12px;max-height:62vh;overflow:auto}
+.dock.ok{background:var(--mint-t);border-top-color:transparent}
+.dock.ng{background:var(--coral-t);border-top-color:transparent}
+.fb-head{display:flex;align-items:center;gap:10px}
+.fb-icon{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--card)}
+.fb-icon svg{width:24px;height:24px}
+.fb-title{font-weight:900;font-size:1.35rem;line-height:1.3}
+.dock.ok .fb-title{color:var(--mint-d)} .dock.ng .fb-title{color:var(--coral-d)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dock.ok .fb-title{color:var(--mint)} :root:not([data-theme="light"]) .dock.ng .fb-title{color:var(--coral)}}
+:root[data-theme="dark"] .dock.ok .fb-title{color:var(--mint)} :root[data-theme="dark"] .dock.ng .fb-title{color:var(--coral)}
+.fb-ans{font-weight:800}
+.ref{align-self:flex-start;font-weight:800;font-size:.82rem;background:var(--card);border-radius:8px;padding:2px 10px;border:2px solid var(--line)}
+.fb-exp{margin:0;font-size:.95rem;line-height:1.75}
+@media (prefers-reduced-motion:no-preference){.dock.ok,.dock.ng{animation:up .22s ease-out}}
+@keyframes up{from{transform:translateY(30px);opacity:.4}}
+.xp-pop{font-weight:900;color:var(--sun-d);margin-left:auto;font-size:1rem}
+
 /* result */
-.score{display:flex;align-items:baseline;gap:10px;font-family:var(--display)}
-.score b{font-size:3.4rem;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
-.score span{color:var(--muted);font-size:1.2rem}
-.missed{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
-.missed li{background:var(--sheet);border:1px solid var(--rule);border-left:3px solid var(--ng);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.missed .mq{font-weight:500}
-.missed .ma{font-size:.9rem}
-.missed .ma b{color:var(--ok)}
+.done{text-align:center;align-items:center}
+.done svg.mascot{width:130px;height:130px}
+.done h2{margin:0;font-size:1.8rem;font-weight:900;color:var(--sun-d);text-wrap:balance}
+.done p{margin:0;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.tile{border:2px solid var(--c);border-radius:16px;overflow:hidden;background:var(--c)}
+.tile span{display:block;color:var(--on);font-weight:800;font-size:.75rem;letter-spacing:.06em;padding:3px 0}
+.tile b{display:block;background:var(--card);font-size:1.4rem;font-weight:900;padding:10px 4px;color:var(--c);font-variant-numeric:tabular-nums;border-radius:12px 12px 0 0}
+.tile.sun{--c:var(--sun-d)} .tile.mint{--c:var(--mint)} .tile.coral{--c:var(--coral)}
+.missed{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;text-align:left;width:100%}
+.missed li{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.missed .mq{font-weight:800}
+.missed .ma{font-size:.92rem}
+.missed .ma b{color:var(--mint-d)}
 .missed .me{font-size:.86rem;color:var(--muted);margin:0}
-kbd{font-family:var(--mono);font-size:.75rem;border:1px solid var(--rule);border-radius:3px;padding:0 4px}
-.hint{font-size:.78rem;color:var(--muted);text-align:center;margin:0}
-@media (max-width:480px){.hint{display:none}}
+h3{margin:8px 0 0;font-size:1.1rem;font-weight:900;align-self:flex-start}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:9;width:100%;height:100%}
+.hint{font-size:.75rem;color:var(--muted);text-align:center;margin:0}
+@media (max-width:520px){.hint{display:none}.q{font-size:1.15rem}}
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <header class="top">
-    <h1 class="logo" id="home-link" tabindex="0">著作権<span>ドリル</span></h1>
-    <div class="sub">日本の著作権法・全<span id="total-count"></span>問</div>
-  </header>
   <main id="app"></main>
 </div>
+<div class="dock" id="dock" hidden><div class="in" id="dock-in"></div></div>
+<canvas id="confetti" hidden></canvas>
 
 <script>
 const CATS = {
-  kihon:  {name:"著作物の基本", desc:"何が保護され、何が保護されないか"},
-  kenri:  {name:"権利の中身", desc:"人格権・財産権・隣接権、職務著作"},
-  kikan:  {name:"保護期間", desc:"死後70年と、その数え方"},
-  reigai: {name:"自由に使える場面", desc:"私的複製・引用・授業・AI学習"},
-  shingai:{name:"侵害と罰則", desc:"侵害になる行為と、そのペナルティ"}
+  kihon:  {name:"著作物の基本", k:"基", desc:"何が守られて、何が守られない？"},
+  kenri:  {name:"権利の中身",   k:"権", desc:"人格権・財産権・隣接権"},
+  kikan:  {name:"保護期間",     k:"期", desc:"死後70年とその数え方"},
+  reigai: {name:"自由に使える場面", k:"例", desc:"私的複製・引用・授業・AI学習"},
+  shingai:{name:"侵害と罰則",   k:"罰", desc:"侵害になる行為とペナルティ"}
 };
 const TF = ["○ 正しい","× 誤り"];
 const Q = [
@@ -143,134 +206,211 @@ const Q = [
  {id:32,c:"shingai",q:"他人の小説の筋や登場人物をほぼそのまま使い、文章だけ自分の言葉に書き換えて販売した。",ch:["表現を変えたので問題ない","翻案権の侵害になりうる","引用なので許される","私的使用なので許される"],a:1,ref:"第27条",e:"元の作品の本質的な特徴を感じ取れるまま改変して新しい作品を作ると、翻案権の侵害になりえます。単なるアイデアの借用か、表現の本質的特徴の利用かがポイントです。"}
 ];
 
-const LIMIT = 10;
-const app = document.getElementById("app");
-document.getElementById("total-count").textContent = Q.length;
+
+const LIMIT = 10, XP_PER = 10;
+const PRAISE = ["すばらしい！","その調子！","カンペキ！","さすが！","いいね！","正解！"];
+const app = document.getElementById("app"), dock = document.getElementById("dock"), dockIn = document.getElementById("dock-in");
 const store = {
-  get(k,d){try{const v=localStorage.getItem("cqz_"+k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){try{localStorage.setItem("cqz_"+k,JSON.stringify(v))}catch(e){}}
+  get(k,d){try{const v=localStorage.getItem("cqz2_"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("cqz2_"+k,JSON.stringify(v))}catch(e){}}
 };
-let S = null;
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const shuffle = a => {a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const today = () => {const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const ICON = {
+  flame:`<svg viewBox="0 0 24 24"><path fill="var(--sun)" d="M12 2c1 3.5 5 5.6 5 11a5 5 0 0 1-10 0c0-2.6 1.4-4.3 2.6-5.6.2 1.9 1 3 2.1 3.6C11 8.6 11.2 5 12 2z"/><path fill="var(--coral)" d="M12 12.5c1.3 1.2 2.4 2.3 2.4 4a2.4 2.4 0 0 1-4.8 0c0-1.5 1-2.6 2.4-4z"/></svg>`,
+  gem:`<svg viewBox="0 0 24 24"><path fill="var(--sky)" d="M6 3h12l4 6-10 12L2 9z"/><path fill="var(--on)" opacity=".45" d="M6 3h6l-4 6H2z"/></svg>`,
+  close:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`,
+  cross:`<svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="3.5" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>`
+};
+// オリジナルのマスコット「ケンちゃん」：本の形をしたキャラクター
+function mascot(mood="happy",cls=""){
+  const mouth = mood==="sad" ? `<path d="M41 66q9-6 18 0" stroke="#24313F" stroke-width="3.5" fill="none" stroke-linecap="round"/>`
+    : mood==="wow" ? `<ellipse cx="50" cy="66" rx="6" ry="7" fill="#24313F"/><ellipse cx="50" cy="69" rx="3.5" ry="3" fill="#FF5C64"/>`
+    : `<path d="M39 61q11 12 22 0" fill="#24313F"/><path d="M44 66q6 4 12 0" fill="#FF5C64"/>`;
+  return `<svg class="mascot ${cls}" viewBox="0 0 100 100" aria-hidden="true">
+    <ellipse cx="50" cy="94" rx="28" ry="4" fill="var(--line)"/>
+    <rect x="18" y="14" width="64" height="74" rx="14" fill="#1CA7EC"/>
+    <rect x="18" y="80" width="64" height="8" rx="4" fill="#0E86C2"/>
+    <rect x="26" y="14" width="6" height="74" fill="#0E86C2" opacity=".55"/>
+    <path d="M64 14h10v20l-5-4-5 4z" fill="#FFC23D"/>
+    <circle cx="41" cy="46" r="8" fill="#fff"/><circle cx="61" cy="46" r="8" fill="#fff"/>
+    <circle cx="42.5" cy="47" r="4.2" fill="#24313F"/><circle cx="62.5" cy="47" r="4.2" fill="#24313F"/>
+    <circle cx="44" cy="45.3" r="1.4" fill="#fff"/><circle cx="64" cy="45.3" r="1.4" fill="#fff"/>
+    <ellipse cx="33" cy="58" rx="4.5" ry="2.6" fill="#FF8FA0" opacity=".7"/><ellipse cx="69" cy="58" rx="4.5" ry="2.6" fill="#FF8FA0" opacity=".7"/>
+    ${mouth}</svg>`;
+}
+function ring(p){
+  const r=26,c=2*Math.PI*r,v=Math.max(0,Math.min(1,(p||0)/100));
+  return `<svg viewBox="0 0 58 58"><circle cx="29" cy="29" r="${r}" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="29" cy="29" r="${r}" fill="none" stroke="var(--c)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${c*v} ${c}"/></svg>`;
+}
+function streakNow(){const s=store.get("streak",{n:0,last:null});if(!s.last)return 0;const d=(new Date(today())-new Date(s.last))/864e5;return d<=1?s.n:0}
+
+let S = null;
+function hideDock(){dock.hidden=true;dock.className="dock";app.style.paddingBottom=""}
 
 function home(){
-  S = null;
-  const best = store.get("best",{}), weak = store.get("weak",[]);
-  const cards = Object.entries(CATS).map(([k,v])=>{
-    const n = Q.filter(q=>q.c===k).length, b = best[k];
-    return `<button class="cat" data-cat="${k}"><b>${v.name}</b><small>${v.desc}</small>
-      <span class="meta"><span>${n}問</span><span class="best">${b!=null?"最高 "+b+"%":"未挑戦"}</span></span></button>`;
-  }).join("");
-  app.innerHTML = `<div style="display:flex;flex-direction:column;gap:20px">
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <h2>今日はどこから解きますか</h2>
-      <p class="lead">1回${LIMIT}問。答えるたびに、根拠の条文と解説が出ます。</p>
-    </div>
+  S=null; hideDock();
+  const best=store.get("best",{}), weak=store.get("weak",[]), xp=store.get("xp",0), st=streakNow();
+  const greet = st>0 ? `${st}日連続で学習中！` : "今日も1レッスンからはじめよう！";
+  app.innerHTML = `<div class="stack">
+    <header class="top">
+      <h1 class="logo" id="home-link" tabindex="0">著作権<span>ドリル</span></h1>
+      <div class="stats">
+        <span class="stat" title="連続学習日数">${ICON.flame}${st}</span>
+        <span class="stat" title="合計XP">${ICON.gem}${xp}</span>
+      </div>
+    </header>
+    <div class="hello">${mascot("happy")}<div class="bubble">${greet}<small>1レッスン${LIMIT}問・答えるたびに条文つきの解説が出るよ</small></div></div>
     <div class="row">
-      <button class="primary" data-cat="all">全分野からランダムに${LIMIT}問</button>
-      ${weak.length?`<button class="ghost" data-cat="weak">苦手な問題だけ（${weak.length}問）</button>`:""}
+      <button class="btn" data-cat="all">全分野ミックスではじめる</button>
+      ${weak.length?`<button class="btn coral" data-cat="weak">苦手をふくしゅう（${weak.length}問）</button>`:""}
     </div>
-    <div class="cats">${cards}</div>
-    <p class="note">内容は2026年10月時点の日本の著作権法にもとづく学習用の要約です。条文の細かな要件や例外は省略している箇所があります。実際の判断が必要な場面では、条文・文化庁の資料や専門家に確認してください。</p>
+    <div class="cats">${Object.entries(CATS).map(([k,v])=>{
+      const n=Q.filter(q=>q.c===k).length,b=best[k];
+      return `<button class="cat c-${k}" data-cat="${k}">
+        <span class="badge">${ring(b)}<b>${v.k}</b></span>
+        <span class="t"><b>${v.name}</b><small>${v.desc}・${n}問</small></span>
+        <span class="pct">${b!=null?b+"%":"NEW"}</span></button>`}).join("")}</div>
+    <p class="note">内容は2026年10月時点の日本の著作権法にもとづく学習用の要約です。細かな要件や例外を省略している箇所があります。実際の判断が必要な場面では、条文・文化庁の資料や専門家に確認してください。</p>
   </div>`;
   app.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>start(b.dataset.cat));
+  const hl=document.getElementById("home-link"); hl.onclick=home; hl.onkeydown=e=>{if(e.key==="Enter")home()};
+  window.scrollTo({top:0});
 }
 
 function start(cat){
   let pool;
-  if(cat==="all") pool = Q;
+  if(cat==="all") pool=Q;
   else if(cat==="weak"){const w=store.get("weak",[]);pool=Q.filter(q=>w.includes(q.id))}
-  else if(cat==="retry") pool = S.missed;
-  else pool = Q.filter(q=>q.c===cat);
-  const qs = shuffle(pool).slice(0,LIMIT).map(q=>{
-    if(q.tf) return {...q,order:[0,1]};
-    return {...q,order:shuffle(q.ch.map((_,i)=>i))};
-  });
-  S = {cat:cat==="retry"?S.cat:cat, qs, i:0, score:0, missed:[], answered:false};
+  else if(cat==="retry") pool=S.missed;
+  else pool=Q.filter(q=>q.c===cat);
+  const qs=shuffle(pool).slice(0,LIMIT).map(q=>({...q,order:q.tf?[0,1]:shuffle(q.ch.map((_,i)=>i))}));
+  S={cat:cat==="retry"?S.cat:cat,qs,i:0,score:0,combo:0,maxCombo:0,missed:[],sel:null,checked:false,xp:0};
   render();
 }
 
 function render(){
-  const q = S.qs[S.i], n = S.qs.length;
-  app.innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
-    <div class="bar"><span>${S.i+1} / ${n}</span><div class="track"><i style="width:${(S.i/n)*100}%"></i></div><span>正解 ${S.score}</span></div>
-    <article class="card" id="card">
-      <div class="qcat">${CATS[q.c].name}${q.tf?"　○×問題":""}</div>
-      <p class="q">${esc(q.q)}</p>
-      <div class="choices ${q.tf?"tf":""}">
-        ${q.order.map((ci,k)=>`<button class="choice" data-ci="${ci}"><span class="k">${k+1}</span><span>${esc(q.tf?q.ch[ci].slice(0,1):q.ch[ci])}</span></button>`).join("")}
-      </div>
-      <div id="exp"></div>
-    </article>
-    <p class="hint"><kbd>1</kbd>〜<kbd>${q.order.length}</kbd> で回答、<kbd>Enter</kbd> で次へ</p>
+  const q=S.qs[S.i], n=S.qs.length;
+  S.sel=null; S.checked=false;
+  app.innerHTML = `<div class="stack">
+    <div class="qtop">
+      <button class="x" id="quit" aria-label="レッスンをやめる">${ICON.close}</button>
+      <div class="prog"><i style="width:${(S.i/n)*100}%"></i></div>
+      <span class="combo ${S.combo<2?"off":""}" title="連続正解">${ICON.flame}${S.combo}</span>
+    </div>
+    <span class="kind c-${q.c}">${CATS[q.c].name}${q.tf?"・○×":""}</span>
+    <p class="q">${esc(q.q)}</p>
+    <div class="choices ${q.tf?"tf":""}" id="choices">
+      ${q.order.map((ci,k)=>q.tf
+        ? `<button class="choice" data-ci="${ci}"><span class="mk">${ci===0?"○":"×"}</span><span class="lb">${ci===0?"正しい":"誤り"}</span></button>`
+        : `<button class="choice" data-ci="${ci}"><span class="k">${k+1}</span><span>${esc(q.ch[ci])}</span></button>`).join("")}
+    </div>
+    <p class="hint">キーボード：<b>1</b>〜<b>${q.order.length}</b> で選択、<b>Enter</b> でチェック／つづける</p>
   </div>`;
-  S.answered = false;
-  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>answer(+b.dataset.ci));
+  document.getElementById("quit").onclick=home;
+  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>pick(+b.dataset.ci));
+  dock.hidden=false; dock.className="dock";
+  dockIn.innerHTML=`<button class="btn mint" id="check" disabled>チェック</button>`;
+  document.getElementById("check").onclick=check;
+  requestAnimationFrame(()=>{app.style.paddingBottom=(dock.offsetHeight+16)+"px"});
+  requestAnimationFrame(()=>{const p=app.querySelector(".prog i");if(p)p.style.width=((S.i)/n*100)+"%"});
+  window.scrollTo({top:0});
 }
 
-function answer(ci){
-  if(S.answered) return;
-  S.answered = true;
-  const q = S.qs[S.i], ok = ci===q.a;
-  if(ok) S.score++; else S.missed.push(q);
-  const weak = new Set(store.get("weak",[]));
-  ok ? weak.delete(q.id) : weak.add(q.id);
-  store.set("weak",[...weak]);
+function pick(ci){
+  if(S.checked) return;
+  S.sel=ci;
+  app.querySelectorAll(".choice").forEach(b=>b.classList.toggle("sel",+b.dataset.ci===ci));
+  document.getElementById("check").disabled=false;
+}
+
+function check(){
+  if(S.checked||S.sel==null) return;
+  S.checked=true;
+  const q=S.qs[S.i], ok=S.sel===q.a, n=S.qs.length;
+  if(ok){S.score++;S.combo++;S.maxCombo=Math.max(S.maxCombo,S.combo);S.xp+=XP_PER}
+  else{S.combo=0;S.missed.push(q)}
+  const weak=new Set(store.get("weak",[])); ok?weak.delete(q.id):weak.add(q.id); store.set("weak",[...weak]);
   app.querySelectorAll(".choice").forEach(b=>{
-    const c=+b.dataset.ci; b.disabled=true;
-    if(c===q.a) b.classList.add("correct"); else if(c===ci) b.classList.add("wrong");
+    const c=+b.dataset.ci; b.disabled=true; b.classList.remove("sel");
+    if(c===q.a){b.classList.add("correct"); if(ok) b.classList.add("bounce")}
+    else if(c===S.sel){b.classList.add("wrong","shake")}
   });
-  const card = document.getElementById("card");
-  card.insertAdjacentHTML("beforeend",`<div class="stamp ${ok?"ok":"ng"}" aria-hidden="true">${ok?"○":"×"}</div>`);
-  const last = S.i===S.qs.length-1;
-  document.getElementById("exp").innerHTML = `<div class="exp">
-    <span class="verdict ${ok?"ok":"ng"}">${ok?"正解":"不正解　正解は「"+esc(q.ch[q.a])+"」"}</span>
+  app.querySelector(".prog i").style.width=((S.i+1)/n*100)+"%";
+  const cb=app.querySelector(".combo"); cb.classList.toggle("off",S.combo<2); cb.innerHTML=ICON.flame+S.combo;
+  const last=S.i===n-1;
+  const title = ok ? (S.combo>=3?`${S.combo}問連続正解！`:PRAISE[Math.floor(Math.random()*PRAISE.length)]) : "おしい！";
+  dock.className="dock "+(ok?"ok":"ng");
+  dockIn.innerHTML=`
+    <div class="fb-head"><span class="fb-icon">${ok?ICON.check:ICON.cross}</span><span class="fb-title">${title}</span>${ok?`<span class="xp-pop">+${XP_PER} XP</span>`:""}</div>
+    ${ok?"":`<div class="fb-ans">正解：${esc(q.ch[q.a])}</div>`}
     <span class="ref">${esc(q.ref)}</span>
-    <p>${esc(q.e)}</p>
-    <button class="primary" id="next" style="margin-top:6px">${last?"結果を見る":"次の問題へ"}</button>
-  </div>`;
-  const nx = document.getElementById("next"); nx.onclick = next; nx.focus({preventScroll:true});
-  document.getElementById("exp").scrollIntoView({behavior:"smooth",block:"nearest"});
+    <p class="fb-exp">${esc(q.e)}</p>
+    <button class="btn ${ok?"mint":"coral"}" id="next">${last?"結果を見る":"つづける"}</button>`;
+  dockIn.scrollTop=0;
+  const nx=document.getElementById("next"); nx.onclick=next; nx.focus({preventScroll:true});
+  requestAnimationFrame(()=>{app.style.paddingBottom=(dock.offsetHeight+16)+"px"});
 }
 
-function next(){
-  if(S.i < S.qs.length-1){S.i++;render();window.scrollTo({top:0})} else result();
-}
+function next(){ if(S.i<S.qs.length-1){S.i++;render()} else result() }
 
 function result(){
+  hideDock();
   const n=S.qs.length, pct=Math.round(S.score/n*100);
-  if(S.cat!=="weak"){const best=store.get("best",{}); if(S.cat in CATS || S.cat==="all"){ if(S.cat in CATS && (best[S.cat]==null||pct>best[S.cat])){best[S.cat]=pct;store.set("best",best)} }}
-  const msg = pct===100?"全問正解。条文の根拠まで押さえられています。":pct>=70?"よくできています。間違えた問題の条文をもう一度確認しましょう。":"まずは解説を読み直して、間違えた問題に再挑戦しましょう。";
-  app.innerHTML = `<div style="display:flex;flex-direction:column;gap:20px">
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <div class="qcat">${S.cat in CATS?CATS[S.cat].name:S.cat==="weak"?"苦手な問題":"全分野ランダム"}の結果</div>
-      <div class="score"><b>${S.score}</b><span>/ ${n} 問正解</span></div>
-      <p class="lead">${msg}</p>
+  if(S.cat in CATS){const best=store.get("best",{});if(best[S.cat]==null||pct>best[S.cat]){best[S.cat]=pct;store.set("best",best)}}
+  store.set("xp",store.get("xp",0)+S.xp);
+  const s=store.get("streak",{n:0,last:null}), t=today();
+  if(s.last!==t){const gap=s.last?(new Date(t)-new Date(s.last))/864e5:99; s.n=gap<=1?s.n+1:1; s.last=t; store.set("streak",s)}
+  const head = pct===100?"パーフェクト！":pct>=70?"レッスン完了！":"おつかれさま！";
+  const msg = pct===100?"全問正解。条文の根拠までばっちりです。":pct>=70?"いい調子！間違えた問題の条文をもう一度見ておこう。":"解説を読み直して、間違えた問題にもう一度チャレンジしよう。";
+  app.innerHTML = `<div class="stack done">
+    ${mascot(pct>=70?"wow":"happy")}
+    <h2>${head}</h2>
+    <p>${msg}</p>
+    <div class="tiles">
+      <div class="tile sun"><span>獲得XP</span><b>${S.xp}</b></div>
+      <div class="tile mint"><span>正答率</span><b>${pct}%</b></div>
+      <div class="tile coral"><span>最大コンボ</span><b>${S.maxCombo}</b></div>
     </div>
-    <div class="row">
-      ${S.missed.length?`<button class="primary" id="retry">間違えた${S.missed.length}問に再挑戦</button>`:""}
-      <button class="ghost" id="again">トップに戻る</button>
+    <div class="row" style="width:100%">
+      ${S.missed.length?`<button class="btn coral" id="retry">間違えた${S.missed.length}問にリベンジ</button>`:""}
+      <button class="btn ${S.missed.length?"plain":""}" id="again">ホームにもどる</button>
     </div>
-    ${S.missed.length?`<h2>間違えた問題</h2><ul class="missed">${S.missed.map(q=>`<li>
-      <span class="ref">${esc(q.ref)}</span>
-      <span class="mq">${esc(q.q)}</span>
-      <span class="ma">正解：<b>${esc(q.ch[q.a])}</b></span>
-      <p class="me">${esc(q.e)}</p></li>`).join("")}</ul>`:""}
+    ${S.missed.length?`<h3>間違えた問題</h3><ul class="missed">${S.missed.map(q=>`<li>
+      <span class="ref">${esc(q.ref)}</span><span class="mq">${esc(q.q)}</span>
+      <span class="ma">正解：<b>${esc(q.ch[q.a])}</b></span><p class="me">${esc(q.e)}</p></li>`).join("")}</ul>`:""}
   </div>`;
   const r=document.getElementById("retry"); if(r) r.onclick=()=>start("retry");
   document.getElementById("again").onclick=home;
   window.scrollTo({top:0});
+  if(pct>=70) confetti();
 }
 
-document.getElementById("home-link").onclick = home;
-document.getElementById("home-link").onkeydown = e=>{if(e.key==="Enter")home()};
+function confetti(){
+  if(reduced) return;
+  const cv=document.getElementById("confetti"), ctx=cv.getContext("2d");
+  cv.hidden=false; const W=cv.width=innerWidth*devicePixelRatio, H=cv.height=innerHeight*devicePixelRatio;
+  const cols=["#1CA7EC","#FFC23D","#22C39A","#FF5C64","#8D6BF0"];
+  const ps=Array.from({length:140},()=>({x:Math.random()*W,y:-Math.random()*H*.5,vx:(Math.random()-.5)*4,vy:2+Math.random()*4,s:(6+Math.random()*7)*devicePixelRatio,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[Math.floor(Math.random()*5)]}));
+  const t0=performance.now();
+  (function f(t){
+    ctx.clearRect(0,0,W,H);
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy*devicePixelRatio;p.vy+=.04;p.r+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);ctx.restore()});
+    if(t-t0<3200) requestAnimationFrame(f); else {ctx.clearRect(0,0,W,H);cv.hidden=true}
+  })(t0);
+}
+
 document.addEventListener("keydown",e=>{
-  if(!S || !document.getElementById("card")) return;
-  if(!S.answered){
+  if(!S||!document.getElementById("choices")) return;
+  if(!S.checked){
     const k=parseInt(e.key,10), bs=app.querySelectorAll(".choice");
-    if(k>=1 && k<=bs.length) bs[k-1].click();
-  }else if(e.key==="Enter" && document.activeElement?.id!=="next"){next()}
+    if(k>=1&&k<=bs.length) bs[k-1].click();
+    else if(e.key==="Enter"&&S.sel!=null){e.preventDefault();check()}
+  }else if(e.key==="Enter"&&document.activeElement?.id!=="next"){e.preventDefault();next()}
 });
 home();
 </script>
