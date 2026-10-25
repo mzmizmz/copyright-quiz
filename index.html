@@ -255,7 +255,8 @@ function hideDock(){dock.hidden=true;dock.className="dock";app.style.paddingBott
 function home(){
   S=null; hideDock();
   const best=store.get("best",{}), weak=store.get("weak",[]), xp=store.get("xp",0), st=streakNow();
-  const greet = st>0 ? `${st}日連続で学習中！` : "今日も1レッスンからはじめよう！";
+  const greet = "俺と一緒に著作権を学ぼう！侵害する奴は法でブン殴る。呪いなんかじゃ済まさねえぜ！";
+  const sub = (st>0 ? `${st}日連続で学習中！` : "今日も1レッスンからはじめよう。") + `1レッスン${LIMIT}問、答えるたびに条文つきの解説が出るぞ`;
   app.innerHTML = `<div class="stack">
     <header class="top">
       <h1 class="logo" id="home-link" tabindex="0">著作権<span>ドリル</span></h1>
@@ -264,7 +265,7 @@ function home(){
         <span class="stat" title="合計XP">${ICON.gem}${xp}</span>
       </div>
     </header>
-    <div class="hello">${mascot("happy")}<div class="bubble">${greet}<small>1レッスン${LIMIT}問・答えるたびに条文つきの解説が出るよ</small></div></div>
+    <div class="hello">${mascot("happy")}<div class="bubble">${greet}<small>${sub}</small></div></div>
     <div class="row">
       <button class="btn" data-cat="all">全分野ミックスではじめる</button>
       ${weak.length?`<button class="btn coral" data-cat="weak">苦手をふくしゅう（${weak.length}問）</button>`:""}
