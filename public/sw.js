@@ -1,7 +1,6 @@
 // オフラインでも遊べるように、アプリのファイルを端末にキャッシュする
-// アプリを更新したら VERSION の数字を上げる（古いキャッシュが入れ替わる）
-const VERSION = "v1";
-const CACHE = "chosakuken-drill-" + VERSION;
+// __BUILD__ はビルドのたびに自動で数字に置き換わり、古いキャッシュが入れ替わる
+const CACHE = "chosakuken-drill-__BUILD__";
 const CORE = [
   "./",
   "./index.html",
@@ -10,11 +9,21 @@ const CORE = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/maskable-192.png",
-  "./icons/maskable-512.png"
+  "./icons/maskable-512.png",
 ];
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    (async () => {
+      const c = await caches.open(CACHE);
+      await c.addAll(CORE);
+      // ビルドで作られた JS・CSS（assets/〇〇.js など）も index.html から探してキャッシュする
+      const html = await (await fetch("./index.html", { cache: "no-store" })).text();
+      const assets = [...html.matchAll(/(?:src|href)="(\.?\/?assets\/[^"]+)"/g)].map((m) => m[1]);
+      await c.addAll(assets);
+      await self.skipWaiting();
+    })()
+  );
 });
 
 self.addEventListener("activate", (e) => {
