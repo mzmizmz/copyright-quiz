@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <title>著作権ドリル</title>
+<meta name="theme-color" content="#1CA7EC">
+<meta name="description" content="日本の著作権法をゲーム感覚で学べるクイズアプリ。150問と本番形式の模擬試験を収録。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800;900&display=swap">
@@ -74,6 +79,7 @@ button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
 .c-shingai{--c:var(--coral);--cd:var(--coral-d)}
 .row{display:flex;gap:12px;flex-wrap:wrap}
 .row > *{flex:1 1 200px}
+.plink{color:var(--sky);font-weight:800}
 .note{font-size:.78rem;color:var(--muted);margin:6px 0 0;line-height:1.6}
 
 /* quiz */
@@ -460,7 +466,7 @@ function home(){
         <span class="badge">${ring(b)}<b>${v.k}</b></span>
         <span class="t"><b>${v.name}</b><small>${v.desc}・${n}問</small></span>
         <span class="pct">${b!=null?b+"%":"NEW"}</span></button>`}).join("")}</div>
-    <p class="note">出題範囲はサーティファイ「ビジネス著作権検定 初級」の公開されている出題範囲を参考にしたオリジナル問題で、公式の問題ではありません。内容は2026年10月時点の日本の著作権法にもとづく学習用の要約です。細かな要件や例外を省略している箇所があります。</p>
+    <p class="note">出題範囲はサーティファイ「ビジネス著作権検定 初級」の公開されている出題範囲を参考にしたオリジナル問題で、公式の問題ではありません。内容は2026年10月時点の日本の著作権法にもとづく学習用の要約です。細かな要件や例外を省略している箇所があります。「ビジネス著作権検定」は株式会社サーティファイの登録商標で、本アプリは同社とは関係のない非公式の学習アプリです。<br><a class="plink" href="privacy.html">プライバシーポリシー</a></p>
   </div>`;
   app.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>start(b.dataset.cat));
   const hl=document.getElementById("home-link"); hl.onclick=home; hl.onkeydown=e=>{if(e.key==="Enter")home()};
@@ -658,6 +664,7 @@ document.addEventListener("keydown",e=>{
   }else if(!S.exam&&e.key==="Enter"&&document.activeElement?.id!=="next"){e.preventDefault();next()}
 });
 home();
+if("serviceWorker" in navigator && location.protocol==="https:"){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
 </script>
 </body>
 </html>
